@@ -70,8 +70,14 @@
     export default {
         methods: {
             doLogout() {
-                localStorage.clear()
-                window.location.reload()
+                this.$root.AccountApi.logOut()
+                .then(resp => {
+                    console.log(resp)
+                })
+                .finally(() => {
+                    localStorage.clear()
+                    window.location.reload()
+                })
             }
         }
     }

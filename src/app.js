@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import BootstrapVue from 'bootstrap-vue'
 import router from './routes/index'
+import AccountApi from '@/app/services/Account.js'
 
 Vue.use(BootstrapVue)
 Vue.use(VueRouter);
@@ -58,6 +59,7 @@ var app = new Vue({
         base_url: path => ROOT_PATH + "/" + (path || ""),
         asset: path => ROOT_PATH + "assets/" + path,
         page: page,
+        AccountApi: AccountApi
       };
     },
     
