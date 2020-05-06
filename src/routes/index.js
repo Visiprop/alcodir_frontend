@@ -1,5 +1,6 @@
 import AppMain from "@/app/pages/MainPage.html";
 import LoginPage from "@/app/pages/Login.html";
+import Linkedin from "@/app/pages/Linkedin.html";
 import DashboardPage from "@/app/pages/DashboardPage.html"
 import VueRouter from "vue-router";
 
@@ -20,6 +21,11 @@ const routes = new VueRouter({
                     path: "/", 
                     name: "dashboard.page", 
                     component: DashboardPage
+                },
+                {
+                    path: "linkedin", 
+                    name: "likendin.page", 
+                    component: Linkedin
                 }
               ]
             },
