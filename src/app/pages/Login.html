@@ -11,14 +11,14 @@
                                 <div class="input-group bootstrap-touchspin">
                                     <input required  type="text" placeholder="Username" v-model="username"  class="form-control"  style="display: block;">
                                 </div>
-                                <small class="form-control-feedback">Input your username.</small>
+                                <small class="form-control-feedback" v-if="username == null || username == ''">Input your username.</small>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group bootstrap-touchspin">
                                 <input required  type="password" placeholder="Password" v-model="password"  class="form-control"  style="display: block;">
                             </div>
-                            <small class="form-control-feedback">Input your password</small>
+                            <small class="form-control-feedback" v-if="password == null || password == ''">Input your password</small>
                         </div>
                         <div class="form-group text-center m-t-20">
                             <div class="col-xs-12">
@@ -39,8 +39,8 @@
                         <!-- <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4> -->
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
-                    <div class="modal-body">
-                        <p>{{error_msg}}</p>
+                    <div class="modal-body" align="center">
+                        <p v-if="error_msg && error_msg.length > 0" style="color: red" >{{error_msg}}</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
@@ -94,9 +94,17 @@
             }
         },
         methods: {
+            resetData() {
+                this.username = ''
+                this.password = ''
+                this.btnDisabled = true
+                this.usernameLength = false
+                this.passwordLength = false
+            },
             submit() {
                 if(this.username != null && this.password != null) {
                     const test = this.username
+                    this.error_msg = ''
                     if(!this.inValid.test(this.username)) {
                         console.log('res', {username: this.username, password: this.password})
                         AccountApi.signIn({username: this.username, password: this.password})
@@ -104,16 +112,27 @@
                             if(_resp.data.success) {
                                 let profile =  _resp.data.attributes.profile
                                 this.$root.state.username = profile.first_name +" "+profile.last_name
-                                this.$root.state.avatar = profile.links[profile.links.findIndex(_item => item.name == 'avatar')].url
+                                this.$root.state.avatar = profile.links[profile.links.findIndex(_item => _item.name == 'avatar')].url
                                 await localStorage.setItem('__CSRF', JSON.stringify(_resp.data.content))
                                 await localStorage.setItem('__pr', JSON.stringify(_resp.data.attributes.profile))
                                 window.location.href = "/"
                             } else {
-                                this.error_msg = _resp.data.message
-                                $("#content-modal").removeAttr('hidden')
+                                try {
+                                    throw _resp.data
+                                } catch (error) {
+                                    console.log(error)
+                                    this.error_msg = error.message
+                                }
+                                
                             }
                         })
                         .catch(err => console.log('eror => ', err))
+                        .finally(() => {
+                            if(this.error_msg != '' && this.error_msg.length > 0) {
+                                $("#content-modal").removeAttr('hidden')
+                                this.resetData()
+                            }
+                        })
                     } else {
                         this.error_msg = `username can\`t be inputed with whitespace character!`
                         $("#content-modal").removeAttr('hidden')

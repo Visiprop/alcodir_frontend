@@ -55,6 +55,7 @@
 </template>
 
 <script>
+    
     export default {
         data(){
             return {
@@ -62,7 +63,11 @@
             }
         },
         mounted(){
-            
+            if(localStorage.getItem('__pr')) {
+                let profiles = JSON.parse(localStorage.getItem('__pr'))
+                this.$root.state.username = profiles.first_name+ ' ' +profiles.last_name
+                this.$root.state.avatar = profiles.links[profiles.links.findIndex(_item => _item.name == 'avatar')].url
+            }
         },
         methods: {
             inActiveClass() {
@@ -75,8 +80,14 @@
                 $(`#li-${page}`).addClass("active")
             },
             doLogout() {
-                localStorage.clear()
-                window.location.reload()
+                this.$root.AccountApi.logOut()
+                .then(resp => {
+                    console.log(resp)
+                })
+                .finally(() => {
+                    localStorage.clear()
+                    window.location.reload()
+                })
             }
         }
     }
