@@ -1,0 +1,84 @@
+<template>
+    <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- User profile -->
+            <div class="user-profile" style="background: url(/assets/images/background/user-info.jpg) no-repeat; background-size: cover;">
+                <!-- User profile image -->
+                <div class="profile-img"> <img :src="$root.state.avatar" alt="user" /> </div>
+                <!-- User profile text-->
+                <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{$root.state.username}}</a>
+                    <div class="dropdown-menu animated flipInY"> 
+                        <a @click.prevent="doLogout()" href="javascript:void(0)" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a> 
+                    </div>
+                </div>
+            </div>
+            <!-- End User profile text-->
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <li class="nav-small-cap">MAIN NAVIGATION</li>
+                    <li id="li-dashboard" @click.prevent="activedClass('dashboard')"> 
+                        <router-link :to="{name: 'dashboard.page'}" class=" waves-effect waves-dark" >
+                            <i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span>
+                        </router-link>
+                    </li>
+                    
+                    
+                    <li class="nav-devider" v-if="flag == 1"></li>
+                    <li class="nav-small-cap" v-if="flag == 1">ACCOUNT MANAGEMENT</li>
+                    
+                    <!-- <li id="li-administrator" @click.prevent="activedClass('administrator')"> 
+                        <router-link :to="{name: 'administrator.page'}" class=" waves-effect waves-dark" >
+                            <i class="mdi mdi-account-circle"></i><span class="hide-menu">Administrator</span>
+                        </router-link>
+                    </li>
+                    
+                    <li id="li-mks" @click.prevent="activedClass('mks')"> 
+                        <router-link :to="{name: 'sales.page'}"  >
+                            <i class="mdi mdi-account-circle"></i><span class="hide-menu">MKS</span>
+                        </router-link>
+                    </li> -->
+                </ul>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+        <!-- Bottom points-->
+        <div class="sidebar-footer">
+            <small class="text-mute" style="margin-left: 10px;">
+                Version 0.0.1
+            </small>
+        </div>
+        <!-- End Bottom points-->
+    </aside>
+</template>
+
+<script>
+    export default {
+        data(){
+            return {
+                flag: 0
+            }
+        },
+        mounted(){
+            
+        },
+        methods: {
+            inActiveClass() {
+                $("#sidebarnav>#li-dashboard>a.active").removeAttr("class")
+                $("#li-dashboard").removeAttr("class")
+                
+            },
+            activedClass(page) {
+                this.inActiveClass()
+                $(`#li-${page}`).addClass("active")
+            },
+            doLogout() {
+                localStorage.clear()
+                window.location.reload()
+            }
+        }
+    }
+</script>
+

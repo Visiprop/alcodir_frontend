@@ -1,0 +1,136 @@
+<template>
+    <section id="wrapper">
+        
+        <div class="login-register" style="background-image:url(../../assets/images/bg_login.jpg); ">        
+            <div class="login-box card">
+                <div class="card-body" >
+                    <form class="form-horizontal form-material" role="form"  @submit.prevent="submit">
+                        <h3 class="box-title m-b-20">Sign In</h3>
+                        <div class="form-group ">
+                            <div class="col-xs-12">
+                                <div class="input-group bootstrap-touchspin">
+                                    <input required  type="text" placeholder="Username" v-model="username"  class="form-control"  style="display: block;">
+                                </div>
+                                <small class="form-control-feedback">Input your username.</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group bootstrap-touchspin">
+                                <input required  type="password" placeholder="Password" v-model="password"  class="form-control"  style="display: block;">
+                            </div>
+                            <small class="form-control-feedback">Input your password</small>
+                        </div>
+                        <div class="form-group text-center m-t-20">
+                            <div class="col-xs-12">
+                                <button :disabled="btnDisabled"  data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" >Sign In</button>
+                            </div>
+                            
+                        </div>
+                        <!-- <img src="/assets/images/gif/loading-gif.gif" alt="loading" style="width: 50%; position: absolute;"> -->
+                    </form>
+                </div>
+          </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none; " aria-hidden="true">
+            
+            <div class="modal-dialog modal-lg" id="content-modal" hidden>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4> -->
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{error_msg}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        
+    </section>
+</template>
+
+<script>
+    import AccountApi from '@/app/services/Account.js'
+    export default {
+        data() {
+            return {
+                username: null,
+                password: null,
+                error_msg: '',
+                inValid: /\s/,
+                btnDisabled: true,
+                usernameLength: false,
+                passwordLength: false
+            }
+        },
+        mounted() {},
+        watch: {
+            username: function(newVal, oldVal) {
+                if(this.username.length > 7) {
+                    this.usernameLength = true
+                    if(this.passwordLength) {
+                        this.btnDisabled = false
+                    }
+                } else {
+                    this.usernameLength = false
+                    this.btnDisabled = true
+                }
+            },
+            password: function(newVal, oldVal) {
+                if(this.password.length > 7) {
+                    this.passwordLength = true
+                    if(this.usernameLength) {
+                        this.btnDisabled = false
+                    }
+                } else {
+                    this.passwordLength = false
+                    this.btnDisabled = true
+                }
+            }
+        },
+        methods: {
+            submit() {
+                if(this.username != null && this.password != null) {
+                    const test = this.username
+                    if(!this.inValid.test(this.username)) {
+                        console.log('res', {username: this.username, password: this.password})
+                        AccountApi.signIn({username: this.username, password: this.password})
+                        .then(async _resp => {
+                            if(_resp.data.success) {
+                                let profile =  _resp.data.attributes.profile
+                                this.$root.state.username = profile.first_name +" "+profile.last_name
+                                this.$root.state.avatar = profile.links[profile.links.findIndex(_item => item.name == 'avatar')].url
+                                await localStorage.setItem('__CSRF', JSON.stringify(_resp.data.content))
+                                await localStorage.setItem('__pr', JSON.stringify(_resp.data.attributes.profile))
+                                window.location.href = "/"
+                            } else {
+                                this.error_msg = _resp.data.message
+                                $("#content-modal").removeAttr('hidden')
+                            }
+                        })
+                        .catch(err => console.log('eror => ', err))
+                    } else {
+                        this.error_msg = `username can\`t be inputed with whitespace character!`
+                        $("#content-modal").removeAttr('hidden')
+                    }
+                } else {
+
+                }
+                
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .btn-info.disabled, .btn-info:disabled {
+        color: #fff;
+        background-color: #9e9e9e !important;
+        border-color: #9e9e9e !important;
+    }
+</style>
