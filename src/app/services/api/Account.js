@@ -9,6 +9,11 @@ class Account {
     static logOut() {
         return axios.delete(RouteApi.auth.out)
     }
+
+    static getNavigation() {
+        return axios.get(RouteApi.privileges.navigation)
+    }
+
 }
 
 export default Account

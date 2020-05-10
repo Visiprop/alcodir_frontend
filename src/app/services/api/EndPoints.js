@@ -4,5 +4,8 @@ export default {
     auth: {
         token: `${ENV}/auth/token`, //METHOD = POST
         out: `${ENV}/auth/out`
+    },
+    privileges: {
+        navigation: `${ENV}/privilege/navigation`
     }
 }

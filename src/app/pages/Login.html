@@ -43,7 +43,7 @@
                         <p v-if="error_msg && error_msg.length > 0" style="color: red" >{{error_msg}}</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+                        <button id="btn-modal-close" type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import AccountApi from '@/app/services/Account.js'
+    // import AccountApi from '@/app/services/Account.js'
     export default {
         data() {
             return {
@@ -101,45 +101,29 @@
                 this.usernameLength = false
                 this.passwordLength = false
             },
-            submit() {
+            async submit() {
                 if(this.username != null && this.password != null) {
                     const test = this.username
                     this.error_msg = ''
                     if(!this.inValid.test(this.username)) {
-                        console.log('res', {username: this.username, password: this.password})
-                        AccountApi.signIn({username: this.username, password: this.password})
-                        .then(async _resp => {
-                            if(_resp.data.success) {
-                                let profile =  _resp.data.attributes.profile
-                                this.$root.state.username = profile.first_name +" "+profile.last_name
-                                this.$root.state.avatar = profile.links[profile.links.findIndex(_item => _item.name == 'avatar')].url
-                                await localStorage.setItem('__CSRF', JSON.stringify(_resp.data.content))
-                                await localStorage.setItem('__pr', JSON.stringify(_resp.data.attributes.profile))
-                                window.location.href = "/"
-                            } else {
-                                try {
-                                    throw _resp.data
-                                } catch (error) {
-                                    console.log(error)
-                                    this.error_msg = error.message
-                                }
-                                
-                            }
-                        })
-                        .catch(err => console.log('eror => ', err))
-                        .finally(() => {
-                            if(this.error_msg != '' && this.error_msg.length > 0) {
+                        
+                        this.$root.$store.dispatch(
+                            'doSign_In', {
+                                username: this.username, 
+                                password: this.password
+                            }).then(_tes => {
+                                this.$root.$router.replace({name: 'dashboard.page'})
+                                // $("#btn-modal-close").click()
+                                $(".modal-backdrop").remove()
+                            }).catch(err => {
+                                this.error_msg = err.message
                                 $("#content-modal").removeAttr('hidden')
-                                this.resetData()
-                            }
-                        })
+                            })
                     } else {
                         this.error_msg = `username can\`t be inputed with whitespace character!`
                         $("#content-modal").removeAttr('hidden')
                     }
-                } else {
-
-                }
+                } 
                 
             }
         }

@@ -5,9 +5,9 @@
             <!-- User profile -->
             <div class="user-profile" style="background: url(/assets/images/background/user-info.jpg) no-repeat; background-size: cover;">
                 <!-- User profile image -->
-                <div class="profile-img"> <img :src="$root.state.avatar" alt="user" /> </div>
+                <div class="profile-img"> <img :src="$store.state.avatar" alt="user" /> </div>
                 <!-- User profile text-->
-                <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{$root.state.username}}</a>
+                <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{$store.state.username}}</a>
                     <div class="dropdown-menu animated flipInY"> 
                         <a @click.prevent="doLogout()" href="javascript:void(0)" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a> 
                     </div>
@@ -20,7 +20,7 @@
                     <li class="nav-small-cap">MAIN NAVIGATION</li>
                     <li id="li-dashboard" @click.prevent="activedClass('dashboard')"> 
                         <router-link :to="{name: 'dashboard.page'}" class=" waves-effect waves-dark" >
-                            <i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span>
+                            <i class="mdi mdi-gauge"></i><span class="hide-menu">Activity</span>
                         </router-link>
                     </li>
                     
@@ -62,6 +62,7 @@
                 flag: 0
             }
         },
+        
         mounted(){
             if(localStorage.getItem('__pr')) {
                 let profiles = JSON.parse(localStorage.getItem('__pr'))

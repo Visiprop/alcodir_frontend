@@ -4,3 +4,19 @@
         
     </div>
 </template>
+
+<script>
+    export default {
+        beforeCreate() {
+            let pages = {
+                title: 'My Activities',
+                breadcrumb: [
+                    {
+                        name: 'My Activity'
+                    }
+                ]
+            }    
+            this.$root.$store.dispatch('setBreadCrumb', pages)
+        }
+    }
+</script>

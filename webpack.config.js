@@ -33,6 +33,9 @@ module.exports = {
                         css: ['vue-style-loader', {
                             loader: 'css-loader',
                         }],
+                        less: ['vue-style-loader', {
+                            loader: 'less-loader',
+                        }],
                         js: [
                             'babel-loader',
                         ],
@@ -53,6 +56,14 @@ module.exports = {
                 'vue-style-loader',
                 'css-loader',
                 "sass-loader"
+                ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                'vue-style-loader',
+                'css-loader',
+                "less-loader"
                 ]
             },
             {

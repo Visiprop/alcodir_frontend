@@ -37,14 +37,14 @@
                     <!-- Profile -->
                     <!-- ============================================================== -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img :src="$root.state.avatar" alt="user" class="profile-pic"></a>
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img :src="$store.state.avatar" alt="user" class="profile-pic"></a>
                         <div class="dropdown-menu dropdown-menu-right scale-up">
                             <ul class="dropdown-user">
                                 <li>
                                     <div class="dw-user-box">
-                                        <div class="u-img"><img :src="$root.state.avatar" alt="user"></div>
+                                        <div class="u-img"><img :src="$root.$store.state.avatar" alt="user"></div>
                                         <div class="u-text">
-                                            <h4>{{$root.state.username}}</h4>
+                                            <h4>{{ $root.$store.state.username }}</h4>
                                             <!-- <a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a> -->
                                         </div>
                                     </div>
@@ -68,17 +68,8 @@
 
 <script>
     export default {
-        methods: {
-            doLogout() {
-                this.$root.AccountApi.logOut()
-                .then(resp => {
-                    console.log(resp)
-                })
-                .finally(() => {
-                    localStorage.clear()
-                    window.location.reload()
-                })
-            }
+        mounted() {
+            console.log('vues', this.$root.$store.state.username)
         }
     }
 

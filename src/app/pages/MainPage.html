@@ -1,25 +1,42 @@
 <template>
     <div>
-        <topbar></topbar>
-        <sidebar></sidebar>
-        <div class="page-wrapper">
-            <div class="container-fluid">
-                <bread-crumb></bread-crumb>
-                <router-view></router-view>
+        <pre-loader v-if="onLoad"></pre-loader>
+        <div v-if="!onLoad" >
+            <topbar></topbar>
+            <sidebar></sidebar>
+            <div class="page-wrapper">
+                <div class="container-fluid">
+                    <bread-crumb></bread-crumb>
+                    <router-view></router-view>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import PreLoader from "../components/PreLoader.html"
     import Topbar from "../components/Topbar.html"
     import Sidebar from "../components/Sidebar.html"
     import BreadCrumb from "../components/BreadCrumb.html"
     export default {
+        data() {
+            return {
+                onLoad: true
+            }
+        },
         components: {
             Topbar,
             Sidebar,
-            BreadCrumb
+            BreadCrumb,
+            PreLoader
+        },
+        mounted() {
+            this.onLoad = this.$store.state.isPreloader
+            setTimeout(() => {
+                this.$store.commit('setIsPreloader', false)
+                this.onLoad = this.$store.state.isPreloader
+            }, 2500)
         }
     }
 
