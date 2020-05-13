@@ -34,25 +34,14 @@
     </div>
 </template>
 <script>
+    import { mapState } from 'vuex';
     export default {
         data() {
             return {
-                title: '',
-                breadcrumb: []
+                Title: '',
+                Breadcrumb: []
             }
         },
-        methods: {
-            // navigateTo(index, page) {
-            //     if(index == 0){
-            //         this.$root.$router.replace({name: page})
-            //     } else {
-                    
-            //     }
-            // }
-        },
-        mounted() {
-            this.title = this.$root.$store.state.title
-            this.breadcrumb = this.$root.$store.state.breadcrumb
-        }
+        computed: mapState(['title','breadcrumb'])
     }
 </script>

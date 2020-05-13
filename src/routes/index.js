@@ -4,6 +4,9 @@ import DashboardPage from "@/app/pages/DashboardPage.html"
 import Startup from "@/app/pages/Startup.html"
 import VueRouter from "vue-router";
 
+import SalesReport from "./sales.route" 
+import salesRoute from "./sales.route";
+
 const routes = new VueRouter({
     mode: 'history',
     routes: [
@@ -21,7 +24,8 @@ const routes = new VueRouter({
                     path: "/", 
                     name: "dashboard.page", 
                     component: DashboardPage
-                }
+                },
+                salesRoute.sales.report.linkedIn
               ]
             },
             {

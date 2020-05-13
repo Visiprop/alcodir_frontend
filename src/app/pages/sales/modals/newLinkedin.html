@@ -1,0 +1,83 @@
+<template>
+    <div>
+        <div id="newFormLinkedin" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="New Connections" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">New Linked In Conncetion</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" v-model="user" placeholder="Jhony Indo">
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>link</label>
+                                        <input type="text" class="form-control" v-model="link" placeholder="https://www.example.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Company</label>
+                                        <input type="text" class="form-control" v-model="company" placeholder="PT Example">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Position</label>
+                                        <input type="text" class="form-control" v-model="position" placeholder="CEO, CTO, Staff etc.">
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select class="select2 form-control" v-model="position">
+                                            <option selected disabled>Choose Status</option>
+                                            <option value="Request Connection">Request Connection</option>
+                                            <option value="Connected">Connected</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                <!--/span-->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary waves-effect text-left" >Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import { mapState } from 'vuex';
+    export default {
+        props: ['dataForms'],
+        data() {
+            return {
+                user: null,
+                link: null,
+                company: null,
+                position: null,
+                status: null,
+                modify: false
+            }
+        },
+        computed: mapState(['onLoad']),
+        methods: {
+            doPost() {
+                
+            }
+        }
+    }
+</script>
