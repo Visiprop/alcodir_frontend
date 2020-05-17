@@ -5,9 +5,9 @@
             <!-- User profile -->
             <div class="user-profile" style="background: url(/assets/images/background/user-info.jpg) no-repeat; background-size: cover;">
                 <!-- User profile image -->
-                <div class="profile-img"> <img :src="$root.state.avatar" alt="user" /> </div>
+                <div class="profile-img"> <img :src="$store.state.avatar" alt="user" /> </div>
                 <!-- User profile text-->
-                <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{$root.state.username}}</a>
+                <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{$store.state.username}}</a>
                     <div class="dropdown-menu animated flipInY"> 
                         <a @click.prevent="doLogout()" href="javascript:void(0)" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a> 
                     </div>
@@ -20,13 +20,26 @@
                     <li class="nav-small-cap">MAIN NAVIGATION</li>
                     <li id="li-dashboard" @click.prevent="activedClass('dashboard')"> 
                         <router-link :to="{name: 'dashboard.page'}" class=" waves-effect waves-dark" >
-                            <i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span>
+                            <i class="mdi mdi-gauge"></i><span class="hide-menu">Activity</span>
                         </router-link>
+                    </li>
+                    <li id="li-report"  >
+                        <a id="a-report" @click.prevent="report()" class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-border-color"></i><span class="hide-menu">Report</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li id="li-report-linkedin" @click.prevent="reportNavigate('report-linkedin')">
+                                <router-link id="a-report-linkedin" :to="{name: 'report.linkedin.page'}">Linked In</router-link>
+                            </li>
+                            <!-- <li><a href="app-chat.html">Chat app</a></li>
+                            <li><a href="app-ticket.html">Support Ticket</a></li>
+                            <li><a href="app-contact.html">Contact / Employee</a></li>
+                            <li><a href="app-contact2.html">Contact Grid</a></li>
+                            <li><a href="app-contact-detail.html">Contact Detail</a></li> -->
+                        </ul>
                     </li>
                     
                     
-                    <li class="nav-devider" v-if="flag == 1"></li>
-                    <li class="nav-small-cap" v-if="flag == 1">ACCOUNT MANAGEMENT</li>
+                    <li class="nav-devider" ></li>
+                    <li class="nav-small-cap" >ACCOUNT MANAGEMENT</li>
                     
                     <!-- <li id="li-administrator" @click.prevent="activedClass('administrator')"> 
                         <router-link :to="{name: 'administrator.page'}" class=" waves-effect waves-dark" >
@@ -62,6 +75,7 @@
                 flag: 0
             }
         },
+        
         mounted(){
             if(localStorage.getItem('__pr')) {
                 let profiles = JSON.parse(localStorage.getItem('__pr'))
@@ -73,11 +87,25 @@
             inActiveClass() {
                 $("#sidebarnav>#li-dashboard>a.active").removeAttr("class")
                 $("#li-dashboard").removeAttr("class")
+                if($('#li-report').hasClass('active')) {
+                    $('#li-report>#a-report').click()
+                }
                 
             },
             activedClass(page) {
+                console.log('tes => ',page)
                 this.inActiveClass()
                 $(`#li-${page}`).addClass("active")
+                
+            },
+            report(){
+                $("#sidebarnav>#li-dashboard>a.active").removeAttr("class")
+                $("#li-dashboard").removeAttr("class")
+            },
+            reportNavigate(page) {
+                let name = page.split('-')
+                // $(`#li-${name[0]}`).addClass("active")
+                $(`#a-${page}`).addClass("active")
             },
             doLogout() {
                 this.$root.AccountApi.logOut()

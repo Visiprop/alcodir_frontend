@@ -2,7 +2,11 @@ import AppMain from "@/app/pages/MainPage.html";
 import LoginPage from "@/app/pages/Login.html";
 import Linkedin from "@/app/pages/Linkedin.html";
 import DashboardPage from "@/app/pages/DashboardPage.html"
+import Startup from "@/app/pages/Startup.html"
 import VueRouter from "vue-router";
+
+import SalesReport from "./sales.route" 
+import salesRoute from "./sales.route";
 
 const routes = new VueRouter({
     mode: 'history',
@@ -22,26 +26,27 @@ const routes = new VueRouter({
                     name: "dashboard.page", 
                     component: DashboardPage
                 },
-                {
-                    path: "linkedin", 
-                    name: "likendin.page", 
-                    component: Linkedin
-                }
+                salesRoute.sales.report.linkedIn
               ]
             },
             {
                 path: "login",
                 name: 'login.page',
                 component: LoginPage
+            },
+            {
+              path: 'setup',
+              name: 'start.page',
+              component: Startup
             }
           ]
         }
     ]
 })
 
-// routes.beforeEach((to, from, next) => {
-//     if (to.name != 'login.page' && !localStorage.getItem('__CSRF')) next({ name: 'login.page' })
-//     else next()
-// })
+routes.beforeEach((to, from, next) => {
+    if (to.name != 'login.page' && !sessionStorage.getItem('__CSRF')) next({ name: 'login.page' })
+    else next()
+})
 
 export default routes
