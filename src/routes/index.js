@@ -1,5 +1,6 @@
 import AppMain from "@/app/pages/MainPage.html";
 import LoginPage from "@/app/pages/Login.html";
+import Linkedin from "@/app/pages/Linkedin.html";
 import DashboardPage from "@/app/pages/DashboardPage.html"
 import Startup from "@/app/pages/Startup.html"
 import VueRouter from "vue-router";
