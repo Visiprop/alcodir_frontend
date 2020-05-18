@@ -1,6 +1,6 @@
 <template>
     <section id="wrapper">
-        
+        <!-- <pre-loader v-if="onLoad"></pre-loader> -->
         <div class="login-register" style="background-image:url(../../assets/images/bg_login.jpg); ">        
             <div class="login-box card">
                 <div class="card-body" >
@@ -33,7 +33,7 @@
                 </div>
           </div>
         </div>
-        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none; " aria-hidden="true">
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             
             <div class="modal-dialog modal-lg" id="content-modal" hidden>
                 <div class="modal-content">
@@ -58,6 +58,7 @@
 
 <script>
     import { mapState } from 'vuex';
+    import PreLoader from "../components/PreLoader.html"
     export default {
         data() {
             return {
@@ -69,6 +70,9 @@
                 usernameLength: false,
                 passwordLength: false
             }
+        },
+        components: {
+            PreLoader
         },
         computed: mapState(['onLoad']),
         mounted() {},
@@ -114,17 +118,27 @@
                             'doSign_In', {
                                 username: this.username, 
                                 password: this.password
-                            }).then(_tes => {
-                                this.$root.$router.replace({name: 'dashboard.page'})
+                            }).then(_res => {
                                 // $("#btn-modal-close").click()
                                 $(".modal-backdrop").remove()
+                                if(_res.success) {
+                                    window.location.href = "/"
+                                } else {
+                                    throw _res
+                                }
+                                
                             }).catch(err => {
                                 this.error_msg = err.message
-                                $("#content-modal").removeAttr('hidden')
+                                setTimeout(() => {
+                                    this.$store.commit('setOn_Load', false)
+                                })
+                                // $("#content-modal").removeAttr('hidden')
                             })
                     } else {
                         this.error_msg = `username can\`t be inputed with whitespace character!`
                         $("#content-modal").removeAttr('hidden')
+                        this.$store.commit('setOn_Load', false)
+
                     }
                 } 
                 

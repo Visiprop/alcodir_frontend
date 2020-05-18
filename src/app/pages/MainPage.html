@@ -1,7 +1,6 @@
 <template>
     <div>
-        <pre-loader v-if="onLoad"></pre-loader>
-        <div v-if="!onLoad" >
+        <div  >
             <topbar></topbar>
             <sidebar></sidebar>
             <div class="page-wrapper">
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-    import PreLoader from "../components/PreLoader.html"
     import Topbar from "../components/Topbar.html"
     import Sidebar from "../components/Sidebar.html"
     import BreadCrumb from "../components/BreadCrumb.html"
@@ -28,10 +26,9 @@
         components: {
             Topbar,
             Sidebar,
-            BreadCrumb,
-            PreLoader
+            BreadCrumb
         },
-        mounted() {
+        async mounted() {
             this.onLoad = this.$store.state.isPreloader
             setTimeout(() => {
                 this.$store.commit('setIsPreloader', false)

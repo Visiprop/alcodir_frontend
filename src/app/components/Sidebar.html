@@ -7,7 +7,7 @@
                 <!-- User profile image -->
                 <div class="profile-img"> <img :src="$store.state.avatar" alt="user" /> </div>
                 <!-- User profile text-->
-                <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{$store.state.username}}</a>
+                <div class="profile-text" v-if="$store.state.username"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{$store.state.username}}</a>
                     <div class="dropdown-menu animated flipInY"> 
                         <a @click.prevent="doLogout()" href="javascript:void(0)" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a> 
                     </div>
@@ -24,7 +24,10 @@
                         </router-link>
                     </li>
                     <li id="li-report"  >
-                        <a id="a-report" @click.prevent="report()" class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-border-color"></i><span class="hide-menu">Report</span></a>
+                        <a id="a-report" @click.prevent="report()" class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
+                            <i class="mdi mdi-border-color"></i>
+                            <span class="hide-menu">Report</span>
+                        </a>
                         <ul aria-expanded="false" class="collapse">
                             <li id="li-report-linkedin" @click.prevent="reportNavigate('report-linkedin')">
                                 <router-link id="a-report-linkedin" :to="{name: 'report.linkedin.page'}">Linked In</router-link>
@@ -36,8 +39,6 @@
                             <li><a href="app-contact-detail.html">Contact Detail</a></li> -->
                         </ul>
                     </li>
-                    
-                    
                     <li class="nav-devider" ></li>
                     <li class="nav-small-cap" >ACCOUNT MANAGEMENT</li>
                     
