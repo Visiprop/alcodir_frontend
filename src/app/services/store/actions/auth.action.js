@@ -19,7 +19,7 @@ export default {
                     sessionStorage.setItem('__CSRF', JSON.stringify(_resp.data.content))
                     state.accessToken = _resp.data.content.access_token
                     // await localStorage.setItem('__pr', JSON.stringify(_resp.data.attributes.profile))
-                    // window.location.href = "/"
+                    window.location.href = "/"
                 } else {
                     try {
                         throw _resp.data

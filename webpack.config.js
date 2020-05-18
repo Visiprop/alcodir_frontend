@@ -12,7 +12,7 @@ module.exports = {
     entry: {
         'app': 'app',
         'assets/js/vue': 'vue',
-        'assets/js/vue-router': 'vue-router'
+        'assets/js/vue-router': 'vue-router',
     },
     externals: {
         Vue: 'vue',
